@@ -97,7 +97,7 @@
 
 .booking-card__title { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .booking-card__name { color: #1c2b25; font-family: Georgia, serif; font-size: 23px; font-weight: 400; line-height: 1.15; }
-.booking-card__description { min-height: 46px; display: -webkit-box; overflow: hidden; color: #5f655f; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.booking-card__description { min-height: 46px; display: -webkit-box; overflow: hidden; color: var(--color-surface-text-muted); line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 
 .booking-card__meta-row {
   display: flex;
@@ -112,7 +112,7 @@
 }
 
 .booking-card__price-block { display: grid; text-align: right; }
-.booking-card__price-block small { color: #777d77; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.booking-card__price-block small { color: var(--color-surface-text-muted); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
 .booking-card__price-block strong { color: #7e5a2d; font-size: 17px; }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -10,9 +10,20 @@
 @import './styles/my-bookings.css';
 @import './styles/admin.css';
 
+:root {
+  --color-page-bg: #111a17;
+  --color-page-text: #f1eadc;
+  --color-page-text-muted: #b5bcb5;
+  --color-accent: #d8ad71;
+  --color-surface-text: #1c2b25;
+  --color-surface-text-muted: #5f6862;
+  --color-surface-link: #79531f;
+  --color-placeholder: #68716c;
+}
+
 .demo-mode-banner {
   padding: 7px 16px;
-  background: #d8ad71;
+  background: var(--color-accent);
   color: #17211d;
   font-size: 13px;
   font-weight: 600;
@@ -58,7 +69,10 @@
   color: #17211d;
 }
 
-.root-layout .ant-pagination .ant-pagination-prev button,
-.root-layout .ant-pagination .ant-pagination-next button {
-  color: #ece8df;
+.ant-input::placeholder,
+.ant-input-number-input::placeholder,
+.ant-picker-input input::placeholder,
+.ant-select-selection-placeholder {
+  color: var(--color-placeholder) !important;
+  opacity: 1;
 }

@@ -1,10 +1,10 @@
-.root-layout { min-height: 100vh; background: #111a17 !important; }
+.root-layout { min-height: 100vh; background: var(--color-page-bg) !important; }
 
 .root-content {
   width: 100%;
   padding: 0 clamp(24px, 5vw, 72px);
-  color: #ece8df;
-  background: #111a17;
+  color: var(--color-page-text);
+  background: var(--color-page-bg);
 }
 
 .root-footer {

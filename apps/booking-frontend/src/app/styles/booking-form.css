@@ -23,7 +23,7 @@
   font-size: 13px;
 }
 
-.booking-form__hint-times { color: #65746c; }
+.booking-form__hint-times { color: var(--color-surface-text-muted); }
 .booking-form__availability { margin-bottom: 18px; }
 .booking-form__datepicker,
 .booking-form__number { width: 100%; }

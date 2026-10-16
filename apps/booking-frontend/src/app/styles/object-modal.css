@@ -39,12 +39,12 @@
 }
 
 .object-modal__meta-label {
-  color: #888 !important;
+  color: var(--color-surface-text-muted) !important;
   font-size: 13px !important;
 }
 
 .object-modal__price {
-  color: #1677ff !important;
+  color: #0958d9 !important;
   font-size: 16px !important;
 }
 

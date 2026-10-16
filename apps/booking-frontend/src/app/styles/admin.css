@@ -6,6 +6,7 @@
 
 .admin-dashboard__title {
   margin-bottom: 24px !important;
+  color: var(--color-page-text) !important;
 }
 
 .admin-dashboard__stats {
@@ -63,15 +64,25 @@
 
 .admin-dashboard__section-title {
   margin-bottom: 0 !important;
+  color: var(--color-page-text) !important;
 }
 
 .admin-dashboard__empty {
   padding: 24px 0;
 }
 
+.admin-dashboard__empty .ant-typography-secondary,
+.admin-bookings__empty .ant-empty-description {
+  color: var(--color-page-text-muted);
+}
+
 .admin-nav-card {
   border-radius: 12px;
+  color: var(--color-surface-text);
 }
+
+.admin-nav-card .ant-typography { color: var(--color-surface-text); }
+.admin-nav-card .ant-typography-secondary { color: var(--color-surface-text-muted); }
 
 .admin-nav-card__icon {
   font-size: 32px;
@@ -95,7 +106,7 @@
 }
 
 .admin-bookings__no-comment {
-  color: #bbb;
+  color: var(--color-surface-text-muted);
 }
 
 .admin-bookings__row-actions {
@@ -127,7 +138,7 @@
 
 .client-drawer__label {
   font-size: 12px;
-  color: #888;
+  color: var(--color-surface-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -138,6 +149,6 @@
 
 .client-drawer__link {
   font-size: 15px;
-  color: #1677ff;
+  color: #0958d9;
   word-break: break-all;
 }

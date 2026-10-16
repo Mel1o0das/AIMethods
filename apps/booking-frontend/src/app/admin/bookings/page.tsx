@@ -298,6 +298,7 @@ export default function AdminBookingsPage() {
 
       {filteredBookings.length === 0 ? (
         <Empty
+          className="admin-bookings__empty"
           description={
             searchQuery || selectedStatusId
               ? "Бронирования не найдены. Попробуйте изменить фильтры."

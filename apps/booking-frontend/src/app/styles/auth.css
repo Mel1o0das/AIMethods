@@ -7,7 +7,14 @@
 .auth-card {
   width: 100%;
   max-width: 420px;
+  color: var(--color-surface-text);
 }
+
+.auth-card .ant-typography { color: var(--color-surface-text); }
+.auth-card .ant-typography-secondary { color: var(--color-surface-text-muted); }
+.auth-card .section-kicker { color: var(--color-surface-link); }
+.auth-card a { color: var(--color-surface-link) !important; }
+.auth-card a:hover { color: #5f3e16 !important; }
 
 .auth-card--wide {
   max-width: 500px;
