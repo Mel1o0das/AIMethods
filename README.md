@@ -11,6 +11,7 @@
 | №3 | UI-концепции и техническое задание BookingService | [Описание продукта](homeworks/hw-03-ui-spec/project_description.md), [три UI-концепции](homeworks/hw-03-ui-spec/ui_concepts/ui_description.md), [User Stories](homeworks/hw-03-ui-spec/user_stories.md), [техническое задание](homeworks/hw-03-ui-spec/technical_specification.md) |
 | №4 | Разработка Frontend с помощью Codex | [Frontend и инструкция запуска](apps/booking-frontend/README.md), [отчёт о разработке](apps/booking-frontend/development_report.md), [промпты и скриншоты](apps/booking-frontend/docs/homework-4/) |
 | №5 | Backend, PostgreSQL и end-to-end интеграция | [документация Backend и проверок](homeworks/hw-05-integration/backend_documentation.md), [процесс работы с Codex](homeworks/hw-05-integration/ai_workflow.md), [исходники Backend](apps/booking-backend/) |
+| №6 | CI/CD для Frontend и Backend | [техническая документация](homeworks/hw-06-cicd/technical_documentation.md), [GitHub Actions workflow](.github/workflows/ci-cd.yml) |
 
 ## Структура репозитория
 

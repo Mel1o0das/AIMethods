@@ -1,0 +1,140 @@
+name: CI and Production Deploy
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/booking-frontend
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/booking-frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check TypeScript
+        run: npx --no-install tsc --noEmit
+
+      - name: Run Vitest
+        run: npm test
+
+      - name: Build frontend in Mock mode
+        env:
+          NEXT_PUBLIC_DATA_MODE: mock
+        run: npm run build
+
+      - name: Build frontend in API mode
+        env:
+          NEXT_PUBLIC_DATA_MODE: api
+          NEXT_PUBLIC_API_BASE_URL: https://api.example.invalid/api
+        run: npm run build
+
+  backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    env:
+      BOOKING_SERVICE_TEST_CONNECTION_STRING: Host=localhost;Port=5432;Database=booking_service_test;Username=booking_test;Password=ci_test_password_not_for_production
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: booking_service_test
+          POSTGRES_USER: booking_test
+          POSTGRES_PASSWORD: ci_test_password_not_for_production
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U booking_test -d booking_service_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    defaults:
+      run:
+        working-directory: apps/booking-backend
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore BookingService.sln
+
+      - name: Build backend
+        run: dotnet build BookingService.sln --configuration Release --no-restore
+
+      - name: Run backend tests
+        run: dotnet test BookingService.sln --configuration Release --no-build --no-restore --logger "console;verbosity=normal"
+
+  backend-docker:
+    name: Backend Docker image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Build backend Docker image
+        run: docker build --file apps/booking-backend/Dockerfile --tag booking-service-api:ci apps/booking-backend
+
+  deploy-production:
+    name: Deploy Frontend to Vercel Production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - frontend
+      - backend
+      - backend-docker
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel production settings
+        run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Build Vercel production artifacts
+        run: vercel build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy prebuilt artifacts to production
+        run: vercel deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
