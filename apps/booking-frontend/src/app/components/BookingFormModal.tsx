@@ -14,6 +14,7 @@ import {
   getOccupiedSlotsForRange,
 } from "../services/bookings";
 import { ObjectType } from "../services/object-types";
+import { isMockMode } from "../services/data-mode";
 
 const { TextArea } = Input;
 
@@ -39,6 +40,7 @@ const intervalsOverlap = (
 ): boolean => start.isBefore(dayjs(slot.endDateTime)) && end.isAfter(dayjs(slot.startDateTime));
 
 export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSuccess }: Props) => {
+  const demoMode = isMockMode();
   const [form] = Form.useForm<BookingFormValues>();
   const [statuses, setStatuses] = useState<BookingStatus[]>([]);
   const [occupiedSlots, setOccupiedSlots] = useState<OccupiedSlot[]>([]);
@@ -114,7 +116,11 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
 
     const { start, end } = normalizeInterval(values);
     if (occupiedSlots.some((slot) => intervalsOverlap(start, end, slot))) {
-      setSubmitError("Выбранный интервал пересекается с занятой демонстрационной заявкой.");
+      setSubmitError(
+        demoMode
+          ? "Выбранный интервал пересекается с занятой демонстрационной заявкой."
+          : "Выбранный интервал пересекается с существующим бронированием.",
+      );
       return;
     }
 
@@ -143,7 +149,7 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
       open
       className="booking-form-modal"
       onCancel={onClose}
-      title={`Демо-заявка: ${booking.name.value}`}
+      title={`${demoMode ? "Демо-заявка" : "Бронирование"}: ${booking.name.value}`}
       width={560}
       footer={null}
       destroyOnHidden
@@ -151,8 +157,12 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
       {successId ? (
         <Result
           status="success"
-          title="Демонстрационная заявка создана"
-          subTitle={`Номер: ${successId}. Реальная заявка в Backend не отправлялась.`}
+          title={demoMode ? "Демонстрационная заявка создана" : "Бронирование создано"}
+          subTitle={
+            demoMode
+              ? `Номер: ${successId}. Реальная заявка в Backend не отправлялась.`
+              : `Номер бронирования: ${successId}. Данные сохранены в Backend.`
+          }
           extra={[
             <Link href="/my-bookings" key="bookings" onClick={onClose}>
               <Button type="primary">Мои бронирования</Button>
@@ -176,12 +186,12 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
       ) : (
         <Form form={form} layout="vertical" onFinish={onSubmit} className="booking-form">
           <div className="booking-form__hint">
-            <strong>Демонстрационные условия</strong>
+            <strong>{demoMode ? "Демонстрационные условия" : "Условия бронирования"}</strong>
             <span>Вместимость: до {booking.capacity} гостей · условная сумма {booking.price.toLocaleString("ru-RU")} ₽</span>
             <span className="booking-form__hint-times">
               {isSauna
-                ? "Демо-допущение: выбор времени с шагом 30 минут."
-                : "Демо-допущение: заезд 15:00, выезд 12:00."}
+                ? `${demoMode ? "Демо-допущение: " : ""}выбор времени с шагом 30 минут.`
+                : `${demoMode ? "Демо-допущение: " : ""}заезд 15:00, выезд 12:00.`}
             </span>
           </div>
 
@@ -266,13 +276,14 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
           {submitError && <Alert className="booking-form__error" type="error" showIcon title={submitError} />}
 
           <div className="booking-form__status-note">
-            Это имитационная заявка. Проверяется только локальная Mock-занятость;
-            доступность реального сервера не запрашивается и не подтверждается.
+            {demoMode
+              ? "Это имитационная заявка. Проверяется только локальная Mock-занятость; доступность реального сервера не запрашивается и не подтверждается."
+              : "Доступность повторно проверит Backend. При одновременном выборе занятого интервала сервер вернёт конфликт."}
           </div>
           <div className="booking-form__actions">
             <Button onClick={onClose} disabled={submitting}>Закрыть</Button>
             <Button type="primary" htmlType="submit" loading={submitting} disabled={submitting}>
-              Создать демо-заявку
+              {demoMode ? "Создать демо-заявку" : "Создать бронирование"}
             </Button>
           </div>
         </Form>

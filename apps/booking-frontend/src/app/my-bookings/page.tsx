@@ -64,7 +64,11 @@ export default function MyBookingsPage() {
     try {
       await cancelBooking(bookingId, user.id);
       setBookings(await getMyBookings(user.id));
-      messageApi.success("Демонстрационная заявка отменена, интервал освобождён");
+      messageApi.success(
+        isDemo
+          ? "Демонстрационная заявка отменена, интервал освобождён"
+          : "Бронирование отменено, интервал освобождён",
+      );
     } catch (error) {
       messageApi.error(error instanceof Error ? error.message : "Не удалось отменить заявку");
     } finally {
@@ -155,7 +159,7 @@ export default function MyBookingsPage() {
 
       {(bookings?.length ?? 0) === 0 ? (
         <div className="my-bookings__centered">
-          <Empty description="У вас пока нет демонстрационных заявок">
+          <Empty description={isDemo ? "У вас пока нет демонстрационных заявок" : "У вас пока нет бронирований"}>
             <Link href="/objects"><Button type="primary">Перейти в каталог</Button></Link>
           </Empty>
         </div>
@@ -194,8 +198,12 @@ export default function MyBookingsPage() {
                   {!cancelled && !finished && (
                     <div className="booking-item-card__footer">
                       <Popconfirm
-                        title="Отменить демонстрационную заявку?"
-                        description="Интервал снова станет свободным в текущей сессии."
+                        title={isDemo ? "Отменить демонстрационную заявку?" : "Отменить бронирование?"}
+                        description={
+                          isDemo
+                            ? "Интервал снова станет свободным в текущей сессии."
+                            : "Backend изменит статус бронирования и освободит интервал."
+                        }
                         okText="Да, отменить"
                         cancelText="Назад"
                         okButtonProps={{ danger: true, loading: cancelling === booking.id }}

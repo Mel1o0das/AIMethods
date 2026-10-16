@@ -1,27 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Form, Input, Typography, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getRoles, register } from "../services/auth";
+import { register } from "../services/auth";
 
 const { Title, Text } = Typography;
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const [userRoleId, setUserRoleId] = useState<string | null>(null);
   const [messageApi, contextHolder] = message.useMessage();
   const router = useRouter();
-
-  useEffect(() => {
-    getRoles().then((roles) => {
-      const userRole = roles.find((r) =>
-        r.name.value.toLowerCase().includes("user"),
-      );
-      if (userRole) setUserRoleId(userRole.id);
-    });
-  }, []);
 
   const onFinish = async (values: {
     email: string;
@@ -31,13 +21,9 @@ export default function RegisterPage() {
     patronymic: string;
     phone: string;
   }) => {
-    if (!userRoleId) {
-      messageApi.error("Не удалось определить роль пользователя");
-      return;
-    }
     setLoading(true);
     try {
-      await register({ ...values, roleId: userRoleId });
+      await register(values);
       messageApi.success("Регистрация успешна!");
       setTimeout(() => router.push("/login"), 1000);
     } catch (e) {
@@ -108,7 +94,6 @@ export default function RegisterPage() {
               type="primary"
               htmlType="submit"
               loading={loading}
-              disabled={!userRoleId}
               block
             >
               Зарегистрироваться

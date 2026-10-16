@@ -43,6 +43,8 @@ vi.mock("../../services/bookings", () => ({
   getOccupiedSlotsForRange: mocks.getOccupiedSlotsForRange,
 }));
 
+vi.mock("../../services/data-mode", () => ({ isMockMode: () => true }));
+
 import { BookingFormModal } from "../BookingFormModal";
 
 const booking = {

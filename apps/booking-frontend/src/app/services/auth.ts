@@ -21,7 +21,7 @@ export interface RegisterRequest {
   firstName: string;
   patronymic: string;
   phone: string;
-  roleId: string;
+  roleId?: string;
 }
 
 export interface Role {
@@ -37,7 +37,7 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
     body: JSON.stringify(data),
   });
   const envelope = await res.json();
-  if (!res.ok) throw new Error(envelope.error?.message ?? "Ошибка входа");
+  if (!res.ok) throw new Error(envelope.error?.messages?.[0]?.message ?? envelope.error?.message ?? "Ошибка входа");
   return envelope.result;
 };
 
@@ -49,7 +49,7 @@ export const register = async (data: RegisterRequest): Promise<string> => {
     body: JSON.stringify(data),
   });
   const envelope = await res.json();
-  if (!res.ok) throw new Error(envelope.error?.message ?? "Ошибка регистрации");
+  if (!res.ok) throw new Error(envelope.error?.messages?.[0]?.message ?? envelope.error?.message ?? "Ошибка регистрации");
   return envelope.result;
 };
 
@@ -80,6 +80,6 @@ export const getMe = async (token: string): Promise<UserProfile> => {
     headers: { Authorization: `Bearer ${token}` },
   });
   const envelope = await res.json();
-  if (!res.ok) throw new Error(envelope.error?.message ?? "Ошибка профиля");
+  if (!res.ok) throw new Error(envelope.error?.messages?.[0]?.message ?? envelope.error?.message ?? "Ошибка профиля");
   return envelope.result;
 };

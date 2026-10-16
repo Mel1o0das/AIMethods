@@ -1,0 +1,45 @@
+services:
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Set POSTGRES_DB in .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Set POSTGRES_USER in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - booking-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__BookingServiceDb: Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      JwtSettings__SecretKey: ${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env}
+      JwtSettings__Issuer: ${JWT_ISSUER:-BookingService}
+      JwtSettings__Audience: ${JWT_AUDIENCE:-BookingService}
+      Cors__AllowedOrigins__0: ${FRONTEND_ORIGIN:-http://localhost:3000}
+      SeedData__Enabled: ${SEED_DATA_ENABLED:-true}
+      ImagesPath: /app/images
+      ImagesPublicUrl: ${IMAGES_PUBLIC_URL:-http://localhost:5260/images}
+    ports:
+      - "${API_PORT:?Set API_PORT in .env}:8080"
+    volumes:
+      - booking-images:/app/images
+      - booking-data-protection:/app/DataProtection-Keys
+volumes:
+  booking-postgres-data:
+  booking-images:
+  booking-data-protection:

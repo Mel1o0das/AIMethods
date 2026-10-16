@@ -20,13 +20,18 @@ const getEnvelope = async <T>(
   response: Response,
   fallbackMessage: string,
 ): Promise<T> => {
-  const envelope = (await response.json()) as {
+  const envelope = (await response.json().catch(() => ({}))) as {
     result?: T;
-    error?: { message?: string };
+    error?: { message?: string; messages?: Array<{ message?: string }> };
   };
   if (!response.ok) {
-    throw new Error(envelope.error?.message ?? fallbackMessage);
+    throw new Error(
+      envelope.error?.messages?.[0]?.message ??
+        envelope.error?.message ??
+        fallbackMessage,
+    );
   }
+  if (!("result" in envelope)) throw new Error(fallbackMessage);
   return envelope.result as T;
 };
 

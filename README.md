@@ -10,17 +10,20 @@
 | №2 | AI Rules, RTCF-промпты и эксперименты с Codex | [Анализ проекта](homeworks/hw-02-ai-rules/hw_ai_rules.md), [правила](homeworks/hw-02-ai-rules/rules.md), [шаблоны](homeworks/hw-02-ai-rules/prompt_templates.md), [методология](homeworks/hw-02-ai-rules/prompt_methodology.md), [сравнение](homeworks/hw-02-ai-rules/testing.md) |
 | №3 | UI-концепции и техническое задание BookingService | [Описание продукта](homeworks/hw-03-ui-spec/project_description.md), [три UI-концепции](homeworks/hw-03-ui-spec/ui_concepts/ui_description.md), [User Stories](homeworks/hw-03-ui-spec/user_stories.md), [техническое задание](homeworks/hw-03-ui-spec/technical_specification.md) |
 | №4 | Разработка Frontend с помощью Codex | [Frontend и инструкция запуска](apps/booking-frontend/README.md), [отчёт о разработке](apps/booking-frontend/development_report.md), [промпты и скриншоты](apps/booking-frontend/docs/homework-4/) |
+| №5 | Backend, PostgreSQL и end-to-end интеграция | [документация Backend и проверок](homeworks/hw-05-integration/backend_documentation.md), [процесс работы с Codex](homeworks/hw-05-integration/ai_workflow.md), [исходники Backend](apps/booking-backend/) |
 
 ## Структура репозитория
 
 ```text
 AI_Coursework/
 ├── apps/
-│   └── booking-frontend/          # Next.js, React, TypeScript, Mock/API
+│   ├── booking-frontend/          # Next.js, React, TypeScript, Mock/API
+│   └── booking-backend/           # ASP.NET Core/.NET 10, EF Core, PostgreSQL
 ├── homeworks/
 │   ├── hw-01-taskflow/            # Отчёт, исходники, доказательства
 │   ├── hw-02-ai-rules/            # Правила, промпты, сравнение, доказательства
-│   └── hw-03-ui-spec/             # Макеты, истории, критерии, ТЗ
+│   ├── hw-03-ui-spec/             # Макеты, истории, критерии, ТЗ
+│   └── hw-05-integration/         # Backend/API/DB документация и AI workflow
 ├── .gitignore
 └── README.md
 ```

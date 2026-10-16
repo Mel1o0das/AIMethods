@@ -1,0 +1,11 @@
+**/bin
+**/obj
+.git
+.idea
+.vs
+DataProtection-Keys
+images
+.env
+.env.*
+!.env.example
+*.log
