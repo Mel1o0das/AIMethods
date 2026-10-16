@@ -56,8 +56,8 @@ export const BookingFormModal = ({ booking, objectTypes, user, onClose, onSucces
 
   useEffect(() => {
     let cancelled = false;
-    const from = dayjs().startOf("day").toISOString();
-    const to = dayjs().add(365, "day").endOf("day").toISOString();
+    const from = dayjs().format("YYYY-MM-DD");
+    const to = dayjs().add(365, "day").format("YYYY-MM-DD");
 
     Promise.all([
       getBookingStatuses(),

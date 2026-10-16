@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import dayjs from "dayjs";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -71,6 +72,38 @@ describe("BookingFormModal", () => {
       },
     ]);
     mocks.getOccupiedSlotsForRange.mockResolvedValue([]);
+  });
+
+  it("requests availability with local calendar dates", async () => {
+    const expectedFrom = dayjs().format("YYYY-MM-DD");
+    const expectedTo = dayjs().add(365, "day").format("YYYY-MM-DD");
+
+    render(
+      <BookingFormModal
+        booking={booking}
+        objectTypes={[
+          { id: "type-sauna", name: { value: "Баня" } },
+        ]}
+        user={{ id: "mock-user" }}
+        onClose={vi.fn()}
+        onSuccess={vi.fn()}
+      />,
+    );
+
+    await waitFor(() =>
+      expect(mocks.getOccupiedSlotsForRange).toHaveBeenCalledWith(
+        booking.id,
+        expectedFrom,
+        expectedTo,
+      ),
+    );
+    const [, from, to] = mocks.getOccupiedSlotsForRange.mock.calls[0] as [
+      string,
+      string,
+      string,
+    ];
+    expect(from).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(to).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
   it("keeps entered values and stays open when creation reports a conflict", async () => {
