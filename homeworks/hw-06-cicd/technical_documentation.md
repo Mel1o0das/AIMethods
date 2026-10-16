@@ -1,4 +1,10 @@
-# Домашнее задание №6. CI/CD
+# Домашнее задание №6 — CI/CD
+
+## Ссылки
+
+- репозиторий: [github.com/Mel1o0das/AIMethods](https://github.com/Mel1o0das/AIMethods);
+- GitHub Actions: [github.com/Mel1o0das/AIMethods/actions](https://github.com/Mel1o0das/AIMethods/actions);
+- production Frontend: [booking-service-xi.vercel.app](https://booking-service-xi.vercel.app/).
 
 ## Что настроено
 
@@ -6,7 +12,7 @@ Workflow `.github/workflows/ci-cd.yml` запускается при каждо�
 
 Обязательные проверки выполняются независимо:
 
-- `Frontend`: `npm ci`, ESLint, проверка TypeScript, 21 тест Vitest и production-сборка в режимах Mock и API;
+- `Frontend`: `npm ci`, ESLint, проверка TypeScript, 22 теста Vitest и production-сборка в режимах Mock и API;
 - `Backend`: восстановление зависимостей, Release-сборка и 14 тестов на .NET 10;
 - `Backend Docker image`: сборка production-образа из существующего `Dockerfile`.
 
@@ -63,15 +69,15 @@ Docker-образ Backend:
 docker build --file apps/booking-backend/Dockerfile --tag booking-service-api:ci apps/booking-backend
 ```
 
-## Настройка GitHub и Vercel
+## GitHub Secrets и Vercel
 
-В GitHub в `Settings` → `Secrets and variables` → `Actions` необходимо добавить repository secrets:
+Workflow использует repository secrets из `Settings` → `Secrets and variables` → `Actions`:
 
 - `VERCEL_TOKEN` — токен Vercel с доступом к production-проекту;
 - `VERCEL_ORG_ID` — идентификатор аккаунта или команды Vercel;
 - `VERCEL_PROJECT_ID` — идентификатор существующего проекта `booking-service`.
 
-Значения `VERCEL_ORG_ID` и `VERCEL_PROJECT_ID` можно получить из `.vercel/project.json`: из корня монорепозитория выполнить `vercel link` и выбрать существующий проект `booking-service`. Файл `.vercel` уже исключён из Git и не должен коммититься.
+Значения `VERCEL_ORG_ID` и `VERCEL_PROJECT_ID` соответствуют существующему проекту `booking-service`. Файл `.vercel` исключён из Git, а значения secrets в исходном коде и документации не фиксируются.
 
 В настройках Vercel проекта `booking-service` Root Directory должен оставаться `apps/booking-frontend`. Production-переменные Frontend, включая `NEXT_PUBLIC_DATA_MODE` и `NEXT_PUBLIC_API_BASE_URL`, настраиваются в Vercel; команда `vercel pull` получает переменные и настройки существующего проекта перед production-сборкой.
 
@@ -83,14 +89,14 @@ vercel build --prod ...
 vercel deploy --prebuilt --prod ...
 ```
 
-Стандартный Git-деплой Vercel пока остаётся включённым. Его следует отключать только после добавления secrets и подтверждения успешного полного GitHub Actions run. До этого момента наличие workflow означает лишь готовность конфигурации, а не подтверждённую работоспособность CI/CD.
+Команды выполняются в требуемой последовательности: `vercel pull` получает production-настройки, `vercel build --prod` собирает приложение, а `vercel deploy --prebuilt --prod` публикует уже подготовленную сборку. Деплой не содержит токенов в репозитории и получает их только из GitHub Secrets.
 
 ## Результаты локальной проверки
 
 Проверено 16 октября 2026 года:
 
 - ESLint и TypeScript — успешно;
-- Vitest — 7 файлов, 21 из 21 теста успешно;
+- Vitest — 7 файлов, 22 из 22 тестов успешно;
 - production-сборка Frontend — успешно в режимах Mock и API;
 - .NET 10 Release build — успешно, 0 предупреждений и 0 ошибок;
 - Backend — 14 из 14 тестов успешно с PostgreSQL 17;
@@ -98,4 +104,8 @@ vercel deploy --prebuilt --prod ...
 
 Локальный `npm ci` также сообщил о 12 уязвимостях зависимостей по данным `npm audit` (1 low, 1 moderate, 8 high, 2 critical). Автоматический `npm audit fix` не выполнялся, чтобы не вносить не относящиеся к CI/CD изменения зависимостей.
 
-Удалённый GitHub Actions run и production-деплой Vercel локальной проверкой не подтверждаются. Для их проверки необходимо сначала добавить GitHub Secrets, затем выполнить push в `main` или открыть pull request.
+## Проверка GitHub Actions и production
+
+На момент проверки 16 октября 2026 года на [странице Actions](https://github.com/Mel1o0das/AIMethods/actions) отображаются три успешно завершённых запуска workflow `CI and Production Deploy`. Последний из них — запуск для commit `a400576` (`Fix booking availability date format`) в `main`. Так как итоговый статус workflow успешный, обязательные jobs и зависящий от них production deploy завершились без ошибки. Отдельная проверка опубликованного Frontend вернула HTTP 200.
+
+Workflow не деплоит Backend на Railway: в рамках ДЗ №6 автоматизирован именно production-деплой Frontend в Vercel. Backend участвует в CI через Release-сборку, 14 тестов с PostgreSQL 17 и проверку сборки Docker-образа.

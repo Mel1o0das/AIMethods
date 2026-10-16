@@ -2,7 +2,7 @@
 
 ## Результат
 
-В репозиторий перенесён существующий `BookingService` на ASP.NET Core/.NET 10 без переписывания архитектуры. Backend находится в `apps/booking-backend`, Frontend — в `apps/booking-frontend`. Локально подтверждена цепочка PostgreSQL → EF Core migrations → API → JWT → создание, чтение и отмена брони → освобождение интервала.
+В репозиторий перенесён существующий `BookingService` на ASP.NET Core/.NET 10 без переписывания архитектуры. Backend находится в `apps/booking-backend`, Frontend — в `apps/booking-frontend`. Подтверждена цепочка PostgreSQL 17 → EF Core migrations → API → JWT → создание, чтение и отмена брони → освобождение интервала. Итоговый Backend опубликован на Railway и подключён к production-версии Frontend на Vercel.
 
 Mock-режим ДЗ №4 сохранён. Выбор источника данных выполняется через `NEXT_PUBLIC_DATA_MODE=mock|api`.
 
@@ -73,6 +73,8 @@ Dev seed включается через `SEED_DATA_ENABLED=true`. Он идем
 
 Отмена разрешена владельцу либо роли `Administrator`. Чтение `/bookings/my/{id}` проверяет соответствие URL и JWT. Общий список, подтверждение, изменение объектов/справочников и список пользователей требуют административной роли.
 
+Frontend предоставляет пользовательские экраны регистрации, входа, каталога, создания и просмотра собственных бронирований. В административной панели реализованы просмотр и подтверждение бронирований, отмена и управление объектами; соответствующие изменяющие операции защищены административной ролью на стороне Backend.
+
 ## Ошибки и логирование
 
 Доменные ошибки отображаются в `400/401/403/404/409/500`. JWT challenge/forbidden и необработанные ошибки также возвращают JSON, а не HTML. Повреждённое JSON-тело проверено отдельно: `400`, код `request.invalid_json`.
@@ -82,6 +84,8 @@ Serilog пишет старт, HTTP method/path/status/duration и значим�
 ## CORS и конфигурация
 
 Всегда разрешён `http://localhost:3000`; дополнительный frontend origin задаётся `Cors__AllowedOrigins__0`/`FRONTEND_ORIGIN`. Используются конкретные origins, `AllowAnyOrigin` отсутствует. Credentials не включены: JWT передаётся в `Authorization` header.
+
+В production разрешён origin `https://booking-service-xi.vercel.app`. Публичные адреса Frontend и Backend обслуживаются по HTTPS платформами Vercel и Railway. Строка подключения, JWT secret и другие чувствительные значения передаются Backend через переменные окружения Railway и не записываются в репозиторий.
 
 Основные переменные:
 
@@ -161,7 +165,7 @@ CORS preflight с origin `http://localhost:3000` вернул `204` и `Access-C
 | полный test suite в одноразовом SDK-контейнере с `booking_service_test` | 14 passed, 0 failed, 0 skipped |
 | `npm run lint` | успешно, 0 ошибок |
 | `npx tsc --noEmit` | успешно, 0 ошибок |
-| `npm test` | 7 файлов, 21 тест — все passed |
+| `npm test` | 7 файлов, 22 теста — все passed |
 | `npm run build`, `NEXT_PUBLIC_DATA_MODE=mock` | успешно, 9 routes |
 | `npm run build`, `NEXT_PUBLIC_DATA_MODE=api` | успешно, 9 routes |
 | `docker compose config` | успешно; DB без host port |
@@ -171,21 +175,13 @@ CORS preflight с origin `http://localhost:3000` вернул `204` и `Access-C
 
 `npm ci` сообщил 12 известных уязвимостей в дереве зависимостей (1 low, 1 moderate, 8 high, 2 critical). Автоматический `npm audit fix --force` не применялся, поскольку он способен внести несовместимые обновления и выходит за рамки минимальной интеграции.
 
-## VPS
+## Production на Railway
 
-Удалённый деплой не выполнялся: доступа к VPS, домена и подтверждённого публичного адреса в этой итерации нет. Воспроизводимая последовательность для VPS:
+- Backend API: [aimethods-production.up.railway.app](https://aimethods-production.up.railway.app/)
+- Health check: [aimethods-production.up.railway.app/health](https://aimethods-production.up.railway.app/health)
+- Frontend: [booking-service-xi.vercel.app](https://booking-service-xi.vercel.app/)
 
-```bash
-git clone <repository-url> AI_Coursework
-cd AI_Coursework/apps/booking-backend
-cp .env.example .env
-# Заполнить .env уникальными production secrets, доменом Frontend и API port.
-docker compose config
-docker compose up --build -d
-docker compose ps
-docker compose logs --tail 100 api
-curl -i http://127.0.0.1:${API_PORT}/health
-```
+На момент проверки 16 октября 2026 года `/health` вернул HTTP 200 и текст `Healthy`. Запрос `GET /api/booking-objects?pageSize=1`, который обращается к данным каталога, вернул HTTP 200 и JSON. Production CORS preflight для origin Frontend вернул HTTP 204 и `Access-Control-Allow-Origin: https://booking-service-xi.vercel.app`.
 
-При обновлении: сделать backup PostgreSQL volume/`pg_dump`, получить новую версию исходников и снова выполнить `docker compose up --build -d`. API применит существующие EF migrations до начала обслуживания запросов. Команды `down -v` и `database drop` в инструкции намеренно отсутствуют. Reverse proxy/TLS и firewall настраиваются отдельно под реальный домен; существующие VPN/другие сервисы трогать не нужно.
+Backend работает с PostgreSQL 17 через EF Core и Npgsql. Production-строка подключения задаётся переменной окружения Railway; её значение в документации и исходном коде не публикуется. Корневой URL API отвечает 404, поскольку отдельный маршрут `/` в приложении не определён; это не относится к health check и маршрутам `/api`.
 

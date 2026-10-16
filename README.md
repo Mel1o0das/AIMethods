@@ -1,37 +1,73 @@
-# Домашние работы по методам искусственного интеллекта
+# AI_Coursework — Методы искусственного интеллекта
 
-Репозиторий содержит результаты домашних заданий №1–4 и исходный код учебных приложений. Материалы каждой работы размещены отдельно; Frontend сервиса BookingService находится в `apps/booking-frontend/`.
+Учебный монорепозиторий с результатами шести домашних заданий. В первых четырёх работах последовательно прорабатывались применение AI-инструментов, правила работы с ними, UI-концепция и клиентская часть BookingService. В ДЗ №5 к приложению добавлен Backend и проведена интеграция, а в ДЗ №6 настроены автоматические проверки и production-деплой Frontend.
 
-## Содержание
+## Опубликованный проект
 
-| Работа | Тема | Материалы |
-|---|---|---|
-| №1 | Сравнение AI-инструментов на примере TaskFlow | [Отчёт](homeworks/hw-01-taskflow/hw1_report.md), [исходники четырёх вариантов](homeworks/hw-01-taskflow/projects/), [скриншоты](homeworks/hw-01-taskflow/evidence/) |
-| №2 | AI Rules, RTCF-промпты и эксперименты с Codex | [Анализ проекта](homeworks/hw-02-ai-rules/hw_ai_rules.md), [правила](homeworks/hw-02-ai-rules/rules.md), [шаблоны](homeworks/hw-02-ai-rules/prompt_templates.md), [методология](homeworks/hw-02-ai-rules/prompt_methodology.md), [сравнение](homeworks/hw-02-ai-rules/testing.md) |
-| №3 | UI-концепции и техническое задание BookingService | [Описание продукта](homeworks/hw-03-ui-spec/project_description.md), [три UI-концепции](homeworks/hw-03-ui-spec/ui_concepts/ui_description.md), [User Stories](homeworks/hw-03-ui-spec/user_stories.md), [техническое задание](homeworks/hw-03-ui-spec/technical_specification.md) |
-| №4 | Разработка Frontend с помощью Codex | [Frontend и инструкция запуска](apps/booking-frontend/README.md), [отчёт о разработке](apps/booking-frontend/development_report.md), [промпты и скриншоты](apps/booking-frontend/docs/homework-4/) |
-| №5 | Backend, PostgreSQL и end-to-end интеграция | [документация Backend и проверок](homeworks/hw-05-integration/backend_documentation.md), [процесс работы с Codex](homeworks/hw-05-integration/ai_workflow.md), [исходники Backend](apps/booking-backend/) |
-| №6 | CI/CD для Frontend и Backend | [техническая документация](homeworks/hw-06-cicd/technical_documentation.md), [GitHub Actions workflow](.github/workflows/ci-cd.yml) |
+| Ресурс | Ссылка |
+|---|---|
+| Репозиторий | [github.com/Mel1o0das/AIMethods](https://github.com/Mel1o0das/AIMethods) |
+| Frontend | [booking-service-xi.vercel.app](https://booking-service-xi.vercel.app/) |
+| Backend API | [aimethods-production.up.railway.app](https://aimethods-production.up.railway.app/) |
+| Health check Backend | [aimethods-production.up.railway.app/health](https://aimethods-production.up.railway.app/health) |
+| GitHub Actions | [github.com/Mel1o0das/AIMethods/actions](https://github.com/Mel1o0das/AIMethods/actions) |
+
+Корневой адрес Backend не содержит отдельной HTML-страницы: рабочие маршруты доступны под `/api`, а состояние сервиса проверяется через `/health`.
+
+## Домашние задания
+
+| № | Тема | Результат | Материалы |
+|---|---|---|---|
+| 1 | Сравнение AI-инструментов | Реализованы и сопоставлены четыре варианта TaskFlow | [Отчёт и исходники](homeworks/hw-01-taskflow/) |
+| 2 | AI Rules и промпты | Подготовлены правила, RTCF-шаблоны и результаты экспериментов с Codex | [Материалы ДЗ №2](homeworks/hw-02-ai-rules/) |
+| 3 | UI-концепция и техническое задание | Описаны продукт, пользовательские сценарии, три UI-концепции и требования к BookingService | [Материалы ДЗ №3](homeworks/hw-03-ui-spec/) |
+| 4 | Frontend | Реализовано клиентское приложение с Mock API, авторизацией, бронированиями и административными экранами | [Frontend и отчёт](apps/booking-frontend/) |
+| 5 | Backend и интеграция | Добавлены ASP.NET Core API, PostgreSQL 17, EF Core, JWT и связь Frontend с Backend | [Документация ДЗ №5](homeworks/hw-05-integration/) |
+| 6 | CI/CD | Настроены GitHub Actions, проверки Frontend и Backend, Docker build и gated-деплой на Vercel | [Документация ДЗ №6](homeworks/hw-06-cicd/) |
+
+## Возможности BookingService
+
+- каталог объектов размещения, просмотр доступности и создание бронирования;
+- регистрация и вход пользователя;
+- список собственных бронирований и их отмена;
+- роли `User` и `Administrator`;
+- подтверждение и отмена бронирований администратором;
+- управление объектами размещения;
+- два режима Frontend: локальный Mock API и работа с реальным Backend.
+
+## Технологии
+
+**Frontend:** Next.js 16, React 19, TypeScript, Ant Design 6, ESLint, Vitest и Testing Library.
+
+**Backend:** ASP.NET Core на .NET 10, Entity Framework Core, Npgsql, PostgreSQL 17, JWT Bearer Authentication, BCrypt и xUnit.
+
+**Инфраструктура:** Docker, Docker Compose, GitHub Actions, Vercel для Frontend и Railway для Backend с PostgreSQL.
 
 ## Структура репозитория
 
 ```text
 AI_Coursework/
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
 ├── apps/
-│   ├── booking-frontend/          # Next.js, React, TypeScript, Mock/API
-│   └── booking-backend/           # ASP.NET Core/.NET 10, EF Core, PostgreSQL
+│   ├── booking-frontend/
+│   └── booking-backend/
 ├── homeworks/
-│   ├── hw-01-taskflow/            # Отчёт, исходники, доказательства
-│   ├── hw-02-ai-rules/            # Правила, промпты, сравнение, доказательства
-│   ├── hw-03-ui-spec/             # Макеты, истории, критерии, ТЗ
-│   └── hw-05-integration/         # Backend/API/DB документация и AI workflow
+│   ├── hw-01-taskflow/
+│   ├── hw-02-ai-rules/
+│   ├── hw-03-ui-spec/
+│   ├── hw-05-integration/
+│   └── hw-06-cicd/
 ├── .gitignore
 └── README.md
 ```
 
-## Запуск Frontend для ДЗ №4
+Материалы ДЗ №4 находятся рядом с реализацией Frontend в `apps/booking-frontend/docs/homework-4/`.
 
-Необходимы совместимая версия Node.js и npm. Из корня репозитория в PowerShell:
+## Запуск локально
+
+Frontend в Mock-режиме:
 
 ```powershell
 cd apps/booking-frontend
@@ -40,15 +76,33 @@ $env:NEXT_PUBLIC_DATA_MODE = "mock"
 npm run dev
 ```
 
-Приложение доступно по адресу `http://localhost:3000` (если порт свободен). В режиме `mock` реальные запросы на создание бронирований в Backend не выполняются.
-
-Проверки:
+Backend с PostgreSQL 17:
 
 ```powershell
-npm run lint
-npx tsc --noEmit
-npm test
-npm run build
+cd apps/booking-backend
+Copy-Item .env.example .env
+# Заменить значения change-me в локальном .env.
+docker compose up --build
 ```
 
-Остальные детали запуска и результаты разработки приведены в [README Frontend](apps/booking-frontend/README.md) и [отчёте ДЗ №4](apps/booking-frontend/development_report.md).
+При стандартном значении `API_PORT=5260` Backend доступен на `http://localhost:5260`, health check — на `http://localhost:5260/health`. Для подключения Frontend используются `NEXT_PUBLIC_DATA_MODE=api` и `NEXT_PUBLIC_API_BASE_URL=http://localhost:5260/api`; Mock-режим от Backend не зависит.
+
+## Защита и конфигурация
+
+Backend использует JWT для аутентификации. Это собственная JWT Bearer-аутентификация приложения, а не реализация OAuth2. Доступ к административным операциям ограничен ролью `Administrator`; для пользовательских бронирований дополнительно проверяется принадлежность ресурса текущему пользователю. CORS разрешает только настроенные origin, включая production-домен Frontend.
+
+Публичные сервисы доступны по HTTPS через Vercel и Railway. Строка подключения к БД, JWT-ключ и параметры deployment не хранятся в исходном коде: Backend получает секреты из переменных окружения Railway, а workflow — из GitHub Secrets (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`).
+
+## Подтверждённые проверки
+
+На момент итоговой проверки 16 октября 2026 года:
+
+- Frontend: ESLint, TypeScript, production build и **22 теста**;
+- Backend: Release build и **14 тестов** с PostgreSQL 17;
+- Docker-образ Backend собирается;
+- опубликованный Frontend отвечает HTTP 200;
+- `/health` опубликованного Backend отвечает HTTP 200 и `Healthy`;
+- запрос к публичному API каталога отвечает HTTP 200;
+- на странице GitHub Actions отображаются успешные запуски workflow `CI and Production Deploy`, включая запуск для изменения `a400576`.
+
+Подробные команды и границы выполненных проверок приведены в документации [ДЗ №5](homeworks/hw-05-integration/backend_documentation.md) и [ДЗ №6](homeworks/hw-06-cicd/technical_documentation.md).
