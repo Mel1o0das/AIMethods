@@ -1,0 +1,64 @@
+@import './styles/reset.css';
+@import './styles/layout.css';
+@import './styles/header.css';
+@import './styles/home.css';
+@import './styles/booking-card.css';
+@import './styles/booking-objects.css';
+@import './styles/object-modal.css';
+@import './styles/auth.css';
+@import './styles/booking-form.css';
+@import './styles/my-bookings.css';
+@import './styles/admin.css';
+
+.demo-mode-banner {
+  padding: 7px 16px;
+  background: #d8ad71;
+  color: #17211d;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.root-layout .ant-btn-primary:not(:disabled) {
+  color: #17211d;
+  background: #d8ad71;
+  border-color: #d8ad71;
+  box-shadow: none;
+}
+
+.root-layout .ant-btn-primary:not(:disabled):hover,
+.root-layout .ant-btn-primary:not(:disabled):focus-visible {
+  color: #111a17;
+  background: #e7c38f;
+  border-color: #e7c38f;
+}
+
+.root-layout .ant-btn-link:not(:disabled),
+.root-layout a:not(.app-header__brand) {
+  color: #c89453;
+}
+
+.root-layout .ant-btn-link:not(:disabled):hover,
+.root-layout a:not(.app-header__brand):hover {
+  color: #e0b677;
+}
+
+.root-layout .ant-btn-dangerous:not(.ant-btn-primary):not(:disabled) {
+  color: #a84242;
+  border-color: #b85a5a;
+}
+
+.root-layout .ant-btn-dangerous:not(.ant-btn-primary):not(:disabled):hover {
+  color: #8d2e2e;
+  border-color: #8d2e2e;
+  background: #fff2f0;
+}
+
+.root-layout .ant-pagination .ant-pagination-item-active a {
+  color: #17211d;
+}
+
+.root-layout .ant-pagination .ant-pagination-prev button,
+.root-layout .ant-pagination .ant-pagination-next button {
+  color: #ece8df;
+}

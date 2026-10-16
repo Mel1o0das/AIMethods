@@ -1,0 +1,29 @@
+@TaskFlow.Api_HostAddress = http://localhost:5000
+@TaskId = 00000000-0000-0000-0000-000000000000
+
+GET {{TaskFlow.Api_HostAddress}}/api/tasks
+Accept: application/json
+
+###
+
+POST {{TaskFlow.Api_HostAddress}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Подготовить релиз",
+  "description": "Составить release notes"
+}
+
+###
+
+GET {{TaskFlow.Api_HostAddress}}/api/tasks/{{TaskId}}
+Accept: application/json
+
+###
+
+PATCH {{TaskFlow.Api_HostAddress}}/api/tasks/{{TaskId}}/status
+Content-Type: application/json
+
+{
+  "status": "InProgress"
+}

@@ -1,0 +1,41 @@
+--- without_rules/BookingService.Application/Features/Bookings/GetById.cs
++++ with_rules/BookingService.Application/Features/Bookings/GetById.cs
+@@ -45,22 +45,22 @@
+             ?? principal.FindFirstValue(ClaimTypes.NameIdentifier);
+ 
+         if (!Guid.TryParse(userIdString, out var userId))
+-            return Error.Authentication("auth.invalid_token", "Недействительный токен");
++            return Error.Authentication("auth.invalid_token", "Invalid token");
+ 
+         var bookingResult = await _bookingRepository.GetByIdAsync(id, cancellationToken);
+         if (bookingResult.IsFailure)
+             return bookingResult.Error;
+ 
+         var booking = bookingResult.Value;
+-        if (booking.UserId != userId && !IsAdmin(principal))
+-            return Error.Authorization("booking.access.denied", "Нет доступа к бронированию");
++        if (booking.UserId != userId && !IsAdminUser(principal))
++            return Error.Authorization("booking.access_denied", "Access to the booking is forbidden");
+ 
+-        _logger.LogInformation("Get booking {Id} by user {UserId}", id, userId);
++        _logger.LogInformation("Get booking {Id} for user {UserId}", id, userId);
+ 
+         return booking;
+     }
+ 
+-    private static bool IsAdmin(ClaimsPrincipal principal)
++    private static bool IsAdminUser(ClaimsPrincipal principal)
+     {
+         var roleName = principal.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
+         return roleName.Contains("admin", StringComparison.OrdinalIgnoreCase)
+--- without_rules/BookingService.Infrastructure.Postgres/Repositories/BookingRepository.cs
++++ with_rules/BookingService.Infrastructure.Postgres/Repositories/BookingRepository.cs
+@@ -35,7 +35,7 @@
+                 .FirstOrDefaultAsync(cancellationToken);
+ 
+             if (booking is null)
+-                return GeneralError.NotFound(id, "бронирование");
++                return GeneralError.NotFound(id, "booking");
+ 
+             return booking;
+         }

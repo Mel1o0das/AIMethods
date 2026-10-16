@@ -1,0 +1,40 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding-top: 48px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card--wide {
+  max-width: 500px;
+}
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: 24px !important;
+}
+
+.auth-footer {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.auth-demo { display: grid; gap: 18px; }
+.auth-demo .ant-typography { margin: 0 !important; }
+
+@media (max-width: 767px) {
+  .auth-page {
+    padding-top: 24px;
+  }
+  .auth-card {
+    max-width: 100%;
+  }
+  .auth-card--wide {
+    max-width: 100%;
+  }
+}

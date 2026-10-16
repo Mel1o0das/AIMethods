@@ -1,0 +1,143 @@
+/* ── Admin dashboard ── */
+
+.admin-dashboard {
+  padding-bottom: 40px;
+}
+
+.admin-dashboard__title {
+  margin-bottom: 24px !important;
+}
+
+.admin-dashboard__stats {
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  border-radius: 12px;
+  border: none;
+  text-align: center;
+}
+
+.stat-card .ant-card-body {
+  padding: 20px 16px;
+}
+
+.stat-card--blue   { background: #e6f4ff; }
+.stat-card--orange { background: #fff7e6; }
+.stat-card--green  { background: #f6ffed; }
+.stat-card--purple { background: #f9f0ff; }
+
+.stat-card__icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.stat-card__value {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.stat-card--blue   .stat-card__value { color: #1677ff; }
+.stat-card--orange .stat-card__value { color: #d46b08; }
+.stat-card--green  .stat-card__value { color: #389e0d; }
+.stat-card--purple .stat-card__value { color: #531dab; }
+
+.stat-card__label {
+  font-size: 13px;
+  color: #666;
+}
+
+.admin-dashboard__section {
+  margin-bottom: 32px;
+}
+
+.admin-dashboard__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.admin-dashboard__section-title {
+  margin-bottom: 0 !important;
+}
+
+.admin-dashboard__empty {
+  padding: 24px 0;
+}
+
+.admin-nav-card {
+  border-radius: 12px;
+}
+
+.admin-nav-card__icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.admin-nav-card__title {
+  margin-bottom: 4px !important;
+}
+
+/* ── Admin bookings table ── */
+
+.admin-bookings__table {
+  margin-top: 16px;
+}
+
+.admin-bookings__period {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.admin-bookings__no-comment {
+  color: #bbb;
+}
+
+.admin-bookings__row-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-bookings__client-btn {
+  padding: 0;
+  height: auto;
+  text-align: left;
+  white-space: normal;
+}
+
+/* ── Client info drawer ── */
+
+.client-drawer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.client-drawer__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-drawer__label {
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.client-drawer__value {
+  font-size: 15px;
+}
+
+.client-drawer__link {
+  font-size: 15px;
+  color: #1677ff;
+  word-break: break-all;
+}

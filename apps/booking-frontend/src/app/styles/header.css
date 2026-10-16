@@ -1,0 +1,59 @@
+.app-header {
+  height: 76px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0;
+  padding: 0 clamp(24px, 5vw, 72px) !important;
+  background: #111916 !important;
+  border-bottom: 1px solid #2b3832;
+}
+
+.app-header__brand {
+  flex-shrink: 0;
+  padding-right: 36px;
+  color: #efe7d8;
+  font-family: Georgia, serif;
+  font-size: 21px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.app-header__brand em { color: #d8ad71; font-weight: 400; }
+.app-header__brand:hover { color: #fff8ea; }
+.app-header__nav { flex: 1; min-width: 0; background: transparent !important; }
+.app-header__nav.ant-menu-dark .ant-menu-item-selected { color: #d8ad71; background: transparent; }
+.app-header__nav.ant-menu-dark .ant-menu-item-selected::after { border-bottom-color: #d8ad71; }
+
+.app-header__auth { display: flex; flex-shrink: 0; align-items: center; gap: 12px; margin-left: 24px; }
+.app-header__auth .ant-btn-primary { color: #17211d; background: #d8ad71; border-color: #d8ad71; }
+.app-header__greeting { color: #b9beb7; font-size: 14px; }
+
+.app-header__hamburger {
+  display: none;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 6px !important;
+  color: #efe7d8 !important;
+  font-size: 22px !important;
+}
+
+.app-header__drawer .ant-drawer-content-wrapper { width: min(320px, 88vw) !important; }
+.app-header__drawer-auth { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2ded6; }
+.app-header__drawer-greeting { margin-bottom: 12px; color: #555; font-size: 14px; }
+
+@media (max-width: 767px) {
+  .app-header { height: 64px !important; padding: 0 18px !important; }
+  .app-header__nav,
+  .app-header__auth { display: none !important; }
+  .app-header__hamburger { display: inline-flex !important; align-items: center; justify-content: center; }
+}
+
+@media (min-width: 768px) and (max-width: 1050px) {
+  .app-header { padding: 0 28px !important; }
+  .app-header__brand { padding-right: 20px; }
+  .app-header__auth { margin-left: 12px; }
+}
+
+@media (min-width: 768px) {
+  .app-header__hamburger { display: none !important; }
+}

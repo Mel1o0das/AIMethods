@@ -1,0 +1,55 @@
+.object-modal__image {
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.object-modal__image .ant-image {
+  width: 100%;
+}
+
+.object-modal__image img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.object-modal__description {
+  color: #555 !important;
+  margin-bottom: 20px !important;
+  line-height: 1.6 !important;
+}
+
+.object-modal__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.object-modal__meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.object-modal__meta-label {
+  color: #888 !important;
+  font-size: 13px !important;
+}
+
+.object-modal__price {
+  color: #1677ff !important;
+  font-size: 16px !important;
+}
+
+.object-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

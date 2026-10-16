@@ -1,0 +1,58 @@
+.booking-form { padding-top: 8px; }
+
+.booking-form__state {
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  color: #59645e;
+}
+
+.booking-form__hint {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 13px 15px;
+  color: #314b40;
+  background: #edf2ed;
+  border: 1px solid #cbd8cf;
+  border-radius: 3px 14px 3px 3px;
+  font-size: 13px;
+}
+
+.booking-form__hint-times { color: #65746c; }
+.booking-form__availability { margin-bottom: 18px; }
+.booking-form__datepicker,
+.booking-form__number { width: 100%; }
+
+.booking-form__status-note {
+  margin-bottom: 20px;
+  padding: 11px 14px;
+  color: #6a552e;
+  background: #fff8e7;
+  border: 1px solid #e7d3a9;
+  border-radius: 3px 12px 3px 3px;
+  font-size: 13px;
+}
+
+.booking-form__actions { display: flex; justify-content: flex-end; gap: 8px; }
+.booking-form__error { margin-bottom: 16px; }
+
+.booking-form-modal .ant-modal-title { color: #253a31; font-family: Georgia, serif; font-size: 20px; }
+.booking-form-modal .ant-result-success .ant-result-icon > .anticon { color: #557667; }
+
+.ant-picker-dropdown .ant-picker-panel-container {
+  max-width: calc(100vw - 16px);
+  overflow: auto;
+}
+
+@media (max-width: 480px) {
+  .booking-form-modal { width: calc(100vw - 24px) !important; max-width: none; margin: 12px auto; top: 0; }
+  .booking-form-modal .ant-modal-content { padding: 18px 14px; }
+  .booking-form-modal .ant-result { padding-inline: 0; }
+  .booking-form__actions { display: grid; grid-template-columns: 1fr; }
+  .booking-form__actions .ant-btn { width: 100%; }
+}
